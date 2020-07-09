@@ -1,12 +1,41 @@
-
-  if ('serviceWorker' in navigator) {
-    console.log("Will service worker register?");
-    navigator.serviceWorker.register('/serviceworker.js').then(function(reg){
-      console.log("Yes it did.");
-    }).catch(function(err) {
-      console.log("No it didn't. This happened: ", err)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      // Registration was successful
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      // registration failed :(
+      console.log('ServiceWorker registration failed: ', err);
     });
-  }
+  });
+}
+
 let deferredPrompt;
-const addBtn = document.querySelector('.add-button');
-addBtn.style.display = 'none';
+var div = document.querySelector('.add-to');
+var button = document.querySelector('.add-to-btn');
+div.style.display = 'none';
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent Chrome 67 and earlier from automatically showing the prompt
+  e.preventDefault();
+  // Stash the event so it can be triggered later.
+  deferredPrompt = e;
+  div.style.display = 'block';
+
+  button.addEventListener('click', (e) => {
+  // hide our user interface that shows our A2HS button
+  div.style.display = 'none';
+  // Show the prompt
+  deferredPrompt.prompt();
+  // Wait for the user to respond to the prompt
+  deferredPrompt.userChoice
+    .then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the A2HS prompt');
+      } else {
+        console.log('User dismissed the A2HS prompt');
+      }
+      deferredPrompt = null;
+    });
+});
+});
