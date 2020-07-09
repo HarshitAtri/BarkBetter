@@ -247,16 +247,12 @@
     console.log("Will service worker register?");
     navigator.serviceWorker.register('service-worker.js').then(function(reg){
       console.log("Yes it did.");
-    }).catch(function(err) {
-      console.log("No it didn't. This happened: ", err)
-    });
-  }
-  let deferredPrompt;
+      let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
   // Prevent Chrome 67 and earlier from automatically showing the prompt
-  e.preventDefault();
+  // e.preventDefault();
   // Stash the event so it can be triggered later.
-  deferredPrompt = e;
+  // deferredPrompt = e;
   // Update UI notify the user they can add to home screen
   document.getElementById("pwaa").style.display = 'block';
 });
@@ -276,6 +272,11 @@
       deferredPrompt = null;
     });
 });
+    }).catch(function(err) {
+      console.log("No it didn't. This happened: ", err)
+    });
+  }
+
 </script>
 
 </html>
