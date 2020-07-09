@@ -5,6 +5,11 @@ body {
   font-family: "Montserrat";
   text-align: center;
 }
+.add-button {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+}
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Montserrat-Bold";
